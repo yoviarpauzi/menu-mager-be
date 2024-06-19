@@ -62,7 +62,7 @@ const getDetail = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const result = await availableFoodService.getDetail();
+    const result = await availableFoodService.getAll();
     res.status(200).json({
       status: "success",
       message: "success get all available food!",
