@@ -20,6 +20,7 @@ model User {
   updated_at   DateTime       @updatedAt
   address      Address?
   subscription Subscription[]
+  @@map("user")
 }
 
 model Address {
@@ -36,6 +37,7 @@ model Address {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   user           User     @relation(references: [id], fields: [user_id])
+  @@map("address")
 }
 
 model Subscription {
@@ -45,6 +47,7 @@ model Subscription {
   is_active           Boolean             @default(true)
   user                User                @relation(references: [id], fields: [user_id])
   subscription_detail SubscriptionDetail?
+  @@map("subscription")
 }
 
 model SubscriptionDetail {
@@ -159,6 +162,7 @@ model Recipe {
   recipe_preferences           RecipePreferences[]
   instruction                  Instruction[]
   subscription_delivery_recipe SubscriptionDeliveryRecipe[]
+  @@map("recipe")
 }
 
 model RecipeAllergy {
@@ -204,6 +208,7 @@ model Instruction {
   recipe      Recipe   @relation(references: [id], fields: [recipe_id])
 
   @@id([recipe_id, step])
+  @@map("instruction")
 }
 
 model Allergy {
@@ -212,6 +217,7 @@ model Allergy {
   created_at     DateTime        @default(now())
   updated_at     DateTime        @updatedAt
   recipe_allergy RecipeAllergy[]
+  @@map("allergy")
 }
 
 model Material {
@@ -221,6 +227,7 @@ model Material {
   created_at      DateTime         @default(now())
   updated_at      DateTime         @updatedAt
   recipe_material RecipeMaterial[]
+  @@map("material")
 }
 
 model Preferences {
@@ -232,4 +239,5 @@ model Preferences {
   subscription_preferences      SubscriptionPreferences[]
   subscription_plan_preferences SubscriptionPlanPreferences[]
   recipe_preferences            RecipePreferences[]
+  @@map("preferences")
 }
