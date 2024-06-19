@@ -2,7 +2,6 @@
 *.yaml
 log
 .env
-*.sql
 package-lock.json
 /test
 *.http
