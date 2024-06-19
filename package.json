@@ -7,8 +7,8 @@
   "scripts": {
     "db:generate": "npx prisma generate",
     "db:deploy": "npx prisma migrate deploy",
-    "start": "node src/index.js",
-    "serve": "nodemon src/index.js",
+    "start": "node index.js",
+    "serve": "nodemon index.js",
     "test": "jest"
   },
   "jest": {
