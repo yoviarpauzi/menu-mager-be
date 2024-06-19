@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `id` VARCHAR(191) NOT NULL,
     `role` VARCHAR(5) NOT NULL DEFAULT 'user',
     `name` VARCHAR(100) NOT NULL,
@@ -11,14 +11,14 @@ CREATE TABLE `User` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `User_email_key`(`email`),
-    UNIQUE INDEX `User_phone_key`(`phone`),
-    UNIQUE INDEX `User_token_key`(`token`),
+    UNIQUE INDEX `user_email_key`(`email`),
+    UNIQUE INDEX `user_phone_key`(`phone`),
+    UNIQUE INDEX `user_token_key`(`token`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Address` (
+CREATE TABLE `address` (
     `id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `province` VARCHAR(50) NOT NULL,
@@ -32,12 +32,12 @@ CREATE TABLE `Address` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Address_user_id_key`(`user_id`),
+    UNIQUE INDEX `address_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Subscription` (
+CREATE TABLE `subscription` (
     `id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `is_pay` BOOLEAN NOT NULL DEFAULT true,
@@ -138,7 +138,7 @@ CREATE TABLE `available_food_recipe` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Recipe` (
+CREATE TABLE `recipe` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(100) NOT NULL,
     `photo` VARCHAR(100) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE `Recipe` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Recipe_name_key`(`name`),
+    UNIQUE INDEX `recipe_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -179,7 +179,7 @@ CREATE TABLE `recipe_preferences` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Instruction` (
+CREATE TABLE `instruction` (
     `recipe_id` VARCHAR(191) NOT NULL,
     `step` INTEGER NOT NULL,
     `description` VARCHAR(191) NOT NULL,
@@ -190,93 +190,93 @@ CREATE TABLE `Instruction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Allergy` (
+CREATE TABLE `allergy` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Allergy_name_key`(`name`),
+    UNIQUE INDEX `allergy_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Material` (
+CREATE TABLE `material` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(100) NOT NULL,
     `photo` VARCHAR(100) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Material_name_key`(`name`),
+    UNIQUE INDEX `material_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Preferences` (
+CREATE TABLE `preferences` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `photo` VARCHAR(100) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Preferences_name_key`(`name`),
+    UNIQUE INDEX `preferences_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Address` ADD CONSTRAINT `Address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `address` ADD CONSTRAINT `address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Subscription` ADD CONSTRAINT `Subscription_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription` ADD CONSTRAINT `subscription_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_detail` ADD CONSTRAINT `subscription_detail_subscription_id_fkey` FOREIGN KEY (`subscription_id`) REFERENCES `Subscription`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_detail` ADD CONSTRAINT `subscription_detail_subscription_id_fkey` FOREIGN KEY (`subscription_id`) REFERENCES `subscription`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_preferences` ADD CONSTRAINT `subscription_preferences_subscription_detail_id_fkey` FOREIGN KEY (`subscription_detail_id`) REFERENCES `subscription_detail`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_preferences` ADD CONSTRAINT `subscription_preferences_subscription_detail_id_fkey` FOREIGN KEY (`subscription_detail_id`) REFERENCES `subscription_detail`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_preferences` ADD CONSTRAINT `subscription_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `Preferences`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_preferences` ADD CONSTRAINT `subscription_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `preferences`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_delivery` ADD CONSTRAINT `subscription_delivery_subscription_detail_id_fkey` FOREIGN KEY (`subscription_detail_id`) REFERENCES `subscription_detail`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_delivery` ADD CONSTRAINT `subscription_delivery_subscription_detail_id_fkey` FOREIGN KEY (`subscription_detail_id`) REFERENCES `subscription_detail`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_delivery_recipe` ADD CONSTRAINT `subscription_delivery_recipe_subscription_delivery_id_fkey` FOREIGN KEY (`subscription_delivery_id`) REFERENCES `subscription_delivery`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_delivery_recipe` ADD CONSTRAINT `subscription_delivery_recipe_subscription_delivery_id_fkey` FOREIGN KEY (`subscription_delivery_id`) REFERENCES `subscription_delivery`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_delivery_recipe` ADD CONSTRAINT `subscription_delivery_recipe_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_delivery_recipe` ADD CONSTRAINT `subscription_delivery_recipe_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_plan_preferences` ADD CONSTRAINT `subscription_plan_preferences_subscription_plan_id_fkey` FOREIGN KEY (`subscription_plan_id`) REFERENCES `subscription_plan`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_plan_preferences` ADD CONSTRAINT `subscription_plan_preferences_subscription_plan_id_fkey` FOREIGN KEY (`subscription_plan_id`) REFERENCES `subscription_plan`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `subscription_plan_preferences` ADD CONSTRAINT `subscription_plan_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `Preferences`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `subscription_plan_preferences` ADD CONSTRAINT `subscription_plan_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `preferences`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `available_food_recipe` ADD CONSTRAINT `available_food_recipe_available_food_id_fkey` FOREIGN KEY (`available_food_id`) REFERENCES `available_food`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `available_food_recipe` ADD CONSTRAINT `available_food_recipe_available_food_id_fkey` FOREIGN KEY (`available_food_id`) REFERENCES `available_food`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `available_food_recipe` ADD CONSTRAINT `available_food_recipe_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `available_food_recipe` ADD CONSTRAINT `available_food_recipe_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_allergy` ADD CONSTRAINT `recipe_allergy_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_allergy` ADD CONSTRAINT `recipe_allergy_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_allergy` ADD CONSTRAINT `recipe_allergy_allergy_id_fkey` FOREIGN KEY (`allergy_id`) REFERENCES `Allergy`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_allergy` ADD CONSTRAINT `recipe_allergy_allergy_id_fkey` FOREIGN KEY (`allergy_id`) REFERENCES `allergy`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_material` ADD CONSTRAINT `recipe_material_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_material` ADD CONSTRAINT `recipe_material_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_material` ADD CONSTRAINT `recipe_material_material_id_fkey` FOREIGN KEY (`material_id`) REFERENCES `Material`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_material` ADD CONSTRAINT `recipe_material_material_id_fkey` FOREIGN KEY (`material_id`) REFERENCES `material`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_preferences` ADD CONSTRAINT `recipe_preferences_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_preferences` ADD CONSTRAINT `recipe_preferences_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `recipe_preferences` ADD CONSTRAINT `recipe_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `Preferences`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recipe_preferences` ADD CONSTRAINT `recipe_preferences_preferences_id_fkey` FOREIGN KEY (`preferences_id`) REFERENCES `preferences`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Instruction` ADD CONSTRAINT `Instruction_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `Recipe`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `instruction` ADD CONSTRAINT `instruction_recipe_id_fkey` FOREIGN KEY (`recipe_id`) REFERENCES `recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
