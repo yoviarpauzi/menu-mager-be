@@ -1,0 +1,12 @@
+/node_modules
+*.yaml
+log
+.env
+*.sql
+package-lock.json
+/test
+*.http
+create-admin-user.js
+images/
+.vscode
+.idea
