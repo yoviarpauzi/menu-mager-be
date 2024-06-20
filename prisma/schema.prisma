@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["debian-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["debian-openssl-3.0.x", "windows"]
 }
 
 datasource db {
@@ -21,6 +21,7 @@ model User {
   updated_at   DateTime       @updatedAt
   address      Address?
   subscription Subscription[]
+
   @@map("user")
 }
 
@@ -38,6 +39,7 @@ model Address {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   user           User     @relation(references: [id], fields: [user_id])
+
   @@map("address")
 }
 
@@ -48,6 +50,7 @@ model Subscription {
   is_active           Boolean             @default(true)
   user                User                @relation(references: [id], fields: [user_id])
   subscription_detail SubscriptionDetail?
+
   @@map("subscription")
 }
 
@@ -86,7 +89,7 @@ model SubscriptionDelivery {
   id                           String                       @id @default(uuid())
   subscription_detail_id       String
   date                         DateTime
-  status                       String                       @db.VarChar(20) @default("packed")
+  status                       String                       @default("packed") @db.VarChar(20)
   total_recipe                 Int
   accepted_at                  DateTime?
   send_at                      DateTime?
@@ -163,6 +166,7 @@ model Recipe {
   recipe_preferences           RecipePreferences[]
   instruction                  Instruction[]
   subscription_delivery_recipe SubscriptionDeliveryRecipe[]
+
   @@map("recipe")
 }
 
@@ -218,6 +222,7 @@ model Allergy {
   created_at     DateTime        @default(now())
   updated_at     DateTime        @updatedAt
   recipe_allergy RecipeAllergy[]
+
   @@map("allergy")
 }
 
@@ -228,6 +233,7 @@ model Material {
   created_at      DateTime         @default(now())
   updated_at      DateTime         @updatedAt
   recipe_material RecipeMaterial[]
+
   @@map("material")
 }
 
@@ -240,5 +246,6 @@ model Preferences {
   subscription_preferences      SubscriptionPreferences[]
   subscription_plan_preferences SubscriptionPlanPreferences[]
   recipe_preferences            RecipePreferences[]
+
   @@map("preferences")
 }
